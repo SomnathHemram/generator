@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom CSS for animations and overrides */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .preview-card {
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+        
+        .skill-tag {
+            transition: all 0.2s ease;
+        }
+        
+        .skill-tag:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* For the download button */
+        .download-btn {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Portfolio Generator</h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">Create a beautiful, professional portfolio with just a few clicks.</p>
+        </header>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Input Form -->
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 border-b pb-2">Your Information</h2>
+                
+                <form id="portfolioForm" class="space-y-6">
+                    <!-- Personal Info Section -->
+                    <fieldset class="border-b pb-6 fade-in">
+                        <legend class="text-lg font-medium text-gray-700 mb-4">Personal Information</legend>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                <input type="text" id="fullName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Professional Title</label>
+                                <input type="text" id="title" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g. Web Developer, Graphic Designer">
+                            </div>
+                            <div>
+                                <label for="bio" class="block text-sm font-medium text-gray-700 mb-1">Bio/About</label>
+                                <textarea id="bio" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <!-- Contact Info Section -->
+                    <fieldset class="border-b pb-6 fade-in">
+                        <legend class="text-lg font-medium text-gray-700 mb-4">Contact Information</legend>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                                <input type="tel" id="phone" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="linkedin" class="block text-sm font-medium text-gray-700 mb-1">LinkedIn</label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">linkedin.com/in/</span>
+                                        <input type="text" id="linkedin" class="flex-1 px-4 py-2 border border-gray-300 rounded-r-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="github" class="block text-sm font-medium text-gray-700 mb-1">GitHub</label>
+                                    <div class="flex">
+                                        <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">github.com/</span>
+                                        <input type="text" id="github" class="flex-1 px-4 py-2 border border-gray-300 rounded-r-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <!-- Skills Section -->
+                    <fieldset class="border-b pb-6 fade-in">
+                        <legend class="text-lg font-medium text-gray-700 mb-4">Skills</legend>
+                        <div>
+                            <label for="newSkill" class="block text-sm font-medium text-gray-700 mb-1">Add Skills</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="newSkill" class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g. JavaScript, UI/UX Design">
+                                <button type="button" id="addSkillBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">Add</button>
+                            </div>
+                            <div id="skillsContainer" class="flex flex-wrap gap-2 mt-4">
+                                <!-- Skills will be added here dynamically -->
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <!-- Work Experience Section -->
+                    <fieldset class="border-b pb-6 fade-in" id="workFields">
+                        <legend class="text-lg font-medium text-gray-700 mb-4">Work Experience</legend>
+                        <div id="workEntries">
+                            <!-- Work entries will be added here -->
+                            <div class="work-entry mb-6 border-b pb-6 last:border-b-0 last:pb-0">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label for="jobTitle" class="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
+                                        <input type="text" name="jobTitle" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    </div>
+                                    <div>
+                                        <label for="company" class="block text-sm font-medium text-gray-700 mb-1">Company</label>
+                                        <input type="text" name="company" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label for="startDate" class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                                        <input type="text" name="startDate" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="MM/YYYY">
+                                    </div>
+                                    <div>
+                                        <label for="endDate" class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                                        <input type="text" name="endDate" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="MM/YYYY or Present">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="jobDescription" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                    <textarea name="jobDescription" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                                </div>
+                                <div class="mt-2 flex justify-end">
+                                    <button type="button" class="remove-work-btn text-red-500 text-sm hover:text-red-700">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" id="addWorkBtn" class="mt-4 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">Add Another Position</button>
+                    </fieldset>
+                    
+                    <!-- Projects Section -->
+                    <fieldset class="fade-in" id="projectFields">
+                        <legend class="text-lg font-medium text-gray-700 mb-4">Projects</legend>
+                        <div id="projectEntries">
+                            <!-- Project entries will be added here -->
+                            <div class="project-entry mb-6 border-b pb-6 last:border-b-0 last:pb-0">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label for="projectTitle" class="block text-sm font-medium text-gray-700 mb-1">Project Title</label>
+                                        <input type="text" name="projectTitle" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    </div>
+                                    <div>
+                                        <label for="projectImage" class="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                                        <input type="text" name="projectImage" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="https://example.com/image.jpg">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="projectDescription" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                    <textarea name="projectDescription" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                                </div>
+                                <div class="mt-2 flex justify-end">
+                                    <button type="button" class="remove-project-btn text-red-500 text-sm hover:text-red-700">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" id="addProjectBtn" class="mt-4 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">Add Another Project</button>
+                    </fieldset>
+                </form>
+            </div>
+            
+            <!-- Live Preview -->
+            <div class="bg-white rounded-lg p-6 shadow-sm sticky top-4">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-800">Live Preview</h2>
+                    <button id="downloadBtn" class="download-btn px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                        Download Portfolio
+                    </button>
+                </div>
+                
+                <div id="portfolioPreview" class="preview-card bg-white border border-gray-200 rounded-md overflow-hidden">
+                    <!-- Preview content will be generated here -->
+                    <div class="bg-blue-600 text-white p-8 text-center">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3731d671-4d81-4868-92a6-e5483a542314.png" alt="Placeholder for profile picture of the user" class="w-24 h-24 rounded-full mx-auto object-cover border-4 border-white mb-4">
+                        <h1 id="previewName" class="text-3xl font-bold mb-2">Your Name</h1>
+                        <h2 id="previewTitle" class="text-xl mb-4">Professional Title</h2>
+                        <p id="previewBio" class="max-w-2xl mx-auto">Your bio will appear here...</p>
+                    </div>
+                    
+                    <div class="p-8">
+                        <section class="mb-12">
+                            <h2 class="text-2xl font-semibold mb-6 pb-2 border-b">Contact Information</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <h3 class="font-medium text-gray-700 mb-2">Email</h3>
+                                    <p id="previewEmail" class="text-gray-600">example@example.com</p>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-700 mb-2">Phone</h3>
+                                    <p id="previewPhone" class="text-gray-600">(123) 456-7890</p>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-700 mb-2">LinkedIn</h3>
+                                    <a id="previewLinkedin" href="#" class="text-blue-600 hover:underline">linkedin.com/in/username</a>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-700 mb-2">GitHub</h3>
+                                    <a id="previewGithub" href="#" class="text-blue-600 hover:underline">github.com/username</a>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <section class="mb-12">
+                            <h2 class="text-2xl font-semibold mb-6 pb-2 border-b">Skills</h2>
+                            <div id="previewSkills" class="flex flex-wrap gap-2">
+                                <span class="skill-tag bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Sample Skill</span>
+                                <span class="skill-tag bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Another Skill</span>
+                            </div>
+                        </section>
+                        
+                        <section class="mb-12">
+                            <h2 class="text-2xl font-semibold mb-6 pb-2 border-b">Work Experience</h2>
+                            <div id="previewWork">
+                                <article class="mb-8 pb-6 border-b last:border-b-0 last:mb-0 last:pb-0">
+                                    <h3 class="text-xl font-medium">Job Title</h3>
+                                    <div class="text-gray-600 mb-2">
+                                        <span class="font-medium">Company Name</span> • <span>Start Date - End Date</span>
+                                    </div>
+                                    <p class="text-gray-700">Description of your responsibilities and achievements in this position.</p>
+                                </article>
+                            </div>
+                        </section>
+                        
+                        <section class="mb-12">
+                            <h2 class="text-2xl font-semibold mb-6 pb-2 border-b">Projects</h2>
+                            <div id="previewProjects" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <article class="border rounded-md overflow-hidden">
+                                    <div class="h-48 bg-gray-100">
+                                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/952ee825-e000-431e-ba26-96730d63b0a0.png" alt="Placeholder for project image" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="p-4">
+                                        <h3 class="text-xl font-medium mb-2">Project Title</h3>
+                                        <p class="text-gray-600">Description of your project and its features.</p>
+                                    </div>
+                                </article>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form elements
+            const form = document.getElementById('portfolioForm');
+            const nameInput = document.getElementById('fullName');
+            const titleInput = document.getElementById('title');
+            const bioInput = document.getElementById('bio');
+            const emailInput = document.getElementById('email');
+            const phoneInput = document.getElementById('phone');
+            const linkedinInput = document.getElementById('linkedin');
+            const githubInput = document.getElementById('github');
+            const newSkillInput = document.getElementById('newSkill');
+            const addSkillBtn = document.getElementById('addSkillBtn');
+            const skillsContainer = document.getElementById('skillsContainer');
+            const addWorkBtn = document.getElementById('addWorkBtn');
+            const workEntries = document.getElementById('workEntries');
+            const addProjectBtn = document.getElementById('addProjectBtn');
+            const projectEntries = document.getElementById('projectEntries');
+            
+            // Preview elements
+            const previewName = document.getElementById('previewName');
+            const previewTitle = document.getElementById('previewTitle');
+            const previewBio = document.getElementById('previewBio');
+            const previewEmail = document.getElementById('previewEmail');
+            const previewPhone = document.getElementById('previewPhone');
+            const previewLinkedin = document.getElementById('previewLinkedin');
+            const previewGithub = document.getElementById('previewGithub');
+            const previewSkills = document.getElementById('previewSkills');
+            const previewWork = document.getElementById('previewWork');
+            const previewProjects = document.getElementById('previewProjects');
+            
+            // Download button
+            const downloadBtn = document.getElementById('downloadBtn');
+            
+            // Store form data
+            let skills = [];
+            let workExperience = [];
+            let projects = [];
+            
+            // Setup event listeners for real-time preview
+            setupTextBinding(nameInput, previewName);
+            setupTextBinding(titleInput, previewTitle);
+            setupTextBinding(bioInput, previewBio);
+            setupTextBinding(emailInput, previewEmail);
+            setupTextBinding(phoneInput, previewPhone);
+            
+            // Special bindings for URLs
+            linkedinInput.addEventListener('input', updateLinkedin);
+            githubInput.addEventListener('input', updateGithub);
+            
+            // Skill management
+            addSkillBtn.addEventListener('click', addSkill);
+            newSkillInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addSkill();
+                    e.preventDefault();
+                }
+            });
+            
+            // Work experience management
+            addWorkBtn.addEventListener('click', addWorkEntry);
+            workEntries.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-work-btn')) {
+                    e.target.closest('.work-entry').remove();
+                    updateWorkPreview();
+                }
+            });
+            
+            // Projects management
+            addProjectBtn.addEventListener('click', addProjectEntry);
+            projectEntries.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-project-btn')) {
+                    e.target.closest('.project-entry').remove();
+                    updateProjectsPreview();
+                }
+            });
+            
+            // Download functionality
+            downloadBtn.addEventListener('click', downloadPortfolio);
+            
+            // Initialize with one work and project entry
+            addWorkEntry();
+            addProjectEntry();
+            
+            // Helper function to setup simple text bindings
+            function setupTextBinding(inputEl, outputEl) {
+                inputEl.addEventListener('input', function() {
+                    outputEl.textContent = inputEl.value || outputEl.dataset.placeholder;
+                });
+            }
+            
+            // Update LinkedIn preview
+            function updateLinkedin() {
+                const value = linkedinInput.value.trim();
+                if (value) {
+                    previewLinkedin.textContent = `linkedin.com/in/${value}`;
+                    previewLinkedin.href = `https://linkedin.com/in/${value}`;
+                } else {
+                    previewLinkedin.textContent = 'linkedin.com/in/username';
+                    previewLinkedin.href = '#';
+                }
+            }
+            
+            // Update GitHub preview
+            function updateGithub() {
+                const value = githubInput.value.trim();
+                if (value) {
+                    previewGithub.textContent = `github.com/${value}`;
+                    previewGithub.href = `https://github.com/${value}`;
+                } else {
+                    previewGithub.textContent = 'github.com/username';
+                    previewGithub.href = '#';
+                }
+            }
+            
+            // Add a new skill
+            function addSkill() {
+                const skill = newSkillInput.value.trim();
+                if (skill && !skills.includes(skill)) {
+                    skills.push(skill);
+                    
+                    // Add to form
+                    const skillEl = document.createElement('span');
+                    skillEl.className = 'skill-tag bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center';
+                    skillEl.innerHTML = `${skill} <button type="button" class="ml-2 text-blue-600 hover:text-blue-800" data-skill="${skill}">&times;</button>`;
+                    skillsContainer.appendChild(skillEl);
+                    
+                    // Add to preview
+                    updateSkillsPreview();
+                    
+                    // Clear input
+                    newSkillInput.value = '';
+                }
+                
+                // Add event listeners for removing skills
+                skillsContainer.querySelectorAll('button').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const skillToRemove = this.getAttribute('data-skill');
+                        skills = skills.filter(s => s !== skillToRemove);
+                        this.parentElement.remove();
+                        updateSkillsPreview();
+                    });
+                });
+            }
+            
+            // Update skills preview
+            function updateSkillsPreview() {
+                previewSkills.innerHTML = '';
+                skills.forEach(skill => {
+                    const skillEl = document.createElement('span');
+                    skillEl.className = 'skill-tag bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm';
+                    skillEl.textContent = skill;
+                    previewSkills.appendChild(skillEl);
+                });
+                
+                if (skills.length === 0) {
+                    previewSkills.innerHTML = '<p class="text-gray-500 italic">Your skills will appear here...</p>';
+                }
+            }
+            
+            // Add a new work entry
+            function addWorkEntry() {
+                const workEntry = document.createElement('div');
+                workEntry.className = 'work-entry mb-6 border-b pb-6 last:border-b-0 last:pb-0';
+                workEntry.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
+                            <input type="text" name="jobTitle" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Company</label>
+                            <input type="text" name="company" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                            <input type="text" name="startDate" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="MM/YYYY">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                            <input type="text" name="endDate" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="MM/YYYY or Present">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea name="jobDescription" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div>
+                    <div class="mt-2 flex justify-end">
+                        <button type="button" class="remove-work-btn text-red-500 text-sm hover:text-red-700">Remove</button>
+                    </div>
+                `;
+                
+                workEntries.appendChild(workEntry);
+                
+                // Setup event listeners for this new entry
+                const inputs = workEntry.querySelectorAll('input, textarea');
+                inputs.forEach(input => {
+                    input.addEventListener('input', updateWorkPreview);
+                });
+            }
+            
+            // Update work experience preview
+            function updateWorkPreview() {
+                const entries = workEntries.querySelectorAll('.work-entry');
+                previewWork.innerHTML = '';
+                
+                if (entries.length === 0) {
+                    previewWork.innerHTML = '<p class="text-gray-500 italic">Your work experience will appear here...</p>';
+                    return;
+                }
+                
+                entries.forEach(entry => {
+                    const jobTitle = entry.querySelector('input[name="jobTitle"]').value;
+                    const company = entry.querySelector('input[name="company"]').value;
+                    const startDate = entry.querySelector('input[name="startDate"]').value;
+                    const endDate = entry.querySelector('input[name="endDate"]').value;
+                    const jobDescription = entry.querySelector('textarea[name="jobDescription"]').value;
+                    
+                    if (jobTitle || company || startDate || endDate || jobDescription) {
+                        const workEl = document.createElement('article');
+                        workEl.className = 'mb-8 pb-6 border-b last:border-b-0 last:mb-0 last:pb-0';
+                        
+                        workEl.innerHTML = `
+                            <h3 class="text-xl font-medium">${jobTitle || 'Job Title'}</h3>
+                            <div class="text-gray-600 mb-2">
+                                <span class="font-medium">${company || 'Company Name'}</span> • 
+                                <span>${startDate || 'Start Date'} - ${endDate || 'End Date'}</span>
+                            </div>
+                            <p class="text-gray-700">${jobDescription || 'Description of your responsibilities and achievements in this position.'}</p>
+                        `;
+                        
+                        previewWork.appendChild(workEl);
+                    }
+                });
+                
+                if (previewWork.innerHTML === '') {
+                    previewWork.innerHTML = '<p class="text-gray-500 italic">Your work experience will appear here...</p>';
+                }
+            }
+            
+            // Add a new project entry
+            function addProjectEntry() {
+                const projectEntry = document.createElement('div');
+                projectEntry.className = 'project-entry mb-6 border-b pb-6 last:border-b-0 last:pb-0';
+                projectEntry.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Project Title</label>
+                            <input type="text" name="projectTitle" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                            <input type="text" name="projectImage" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="https://example.com/image.jpg">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea name="projectDescription" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div>
+                    <div class="mt-2 flex justify-end">
+                        <button type="button" class="remove-project-btn text-red-500 text-sm hover:text-red-700">Remove</button>
+                    </div>
+                `;
+                
+                projectEntries.appendChild(projectEntry);
+                
+                // Setup event listeners for this new entry
+                const inputs = projectEntry.querySelectorAll('input, textarea');
+                inputs.forEach(input => {
+                    input.addEventListener('input', updateProjectsPreview);
+                });
+            }
+            
+            // Update projects preview
+            function updateProjectsPreview() {
+                const entries = projectEntries.querySelectorAll('.project-entry');
+                previewProjects.innerHTML = '';
+                
+                if (entries.length === 0) {
+                    previewProjects.innerHTML = '<p class="text-gray-500 italic">Your projects will appear here...</p>';
+                    return;
+                }
+                
+                entries.forEach(entry => {
+                    const projectTitle = entry.querySelector('input[name="projectTitle"]').value;
+                    const projectImage = entry.querySelector('input[name="projectImage"]').value;
+                    const projectDescription = entry.querySelector('textarea[name="projectDescription"]').value;
+                    
+                    if (projectTitle || projectDescription) {
+                        const projectEl = document.createElement('article');
+                        projectEl.className = 'border rounded-md overflow-hidden';
+                        
+                        const imageSrc = projectImage || 'https://placehold.co/600x400';
+                        
+                        projectEl.innerHTML = `
+                            <div class="h-48 bg-gray-100">
+                                <img src="${imageSrc}" alt="${projectTitle || 'Project image'}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400'">
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-xl font-medium mb-2">${projectTitle || 'Project Title'}</h3>
+                                <p class="text-gray-600">${projectDescription || 'Description of your project and its features.'}</p>
+                            </div>
+                        `;
+                        
+                        previewProjects.appendChild(projectEl);
+                    }
+                });
+                
+                if (previewProjects.innerHTML === '') {
+                    previewProjects.innerHTML = '<p class="text-gray-500 italic">Your projects will appear here...</p>';
+                }
+            }
+            
+            // Download portfolio as ZIP (simplified - in a real app you'd use a library like JSZip)
+            function downloadPortfolio() {
+                // Create a temporary link to download the HTML
+                const portfolioHTML = document.getElementById('portfolioPreview').outerHTML;
+                const blob = new Blob([portfolioHTML], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'portfolio.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                // In a complete implementation, you would:
+                // 1. Use JSZip to create a zip file with HTML, CSS, and images
+                // 2. Include all assets as separate files
+                // 3. Handle image downloads properly
+                alert('Your portfolio has been downloaded as HTML. In a complete implementation, this would include all assets as a ZIP file.');
+            }
+        });
+    </script>
+</body>
+</html>
