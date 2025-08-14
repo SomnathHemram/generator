@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Portfolio Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary: #4b5563;
+            --light: #f3f4f6;
+            --dark: #1f2937;
+            --success: #10b981;
+            --error: #ef4444;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease-in-out;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            gap: 2rem;
+        }
+
+        /* Form Styles */
+        .form-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .form-section h2 {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .form-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #374151;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Dynamic Form Elements */
+        .dynamic-list {
+            margin-top: 1rem;
+        }
+
+        .dynamic-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: #f9fafb;
+            border-radius: var(--border-radius);
+            border: 1px dashed #d1d5db;
+        }
+
+        .dynamic-item-content {
+            flex: 1;
+        }
+
+        .dynamic-item-delete {
+            color: var(--error);
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dynamic-item-delete:hover {
+            transform: scale(1.1);
+        }
+
+        .add-item-btn {
+            margin-top: 1rem;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            overflow-y: auto;
+            max-height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+
+        .portfolio-template {
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .portfolio-header {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .portfolio-name {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .portfolio-title {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .portfolio-bio {
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .portfolio-body {
+            padding: 2rem;
+        }
+
+        .portfolio-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .portfolio-section-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .portfolio-section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+
+        .contact-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .contact-icon {
+            color: var(--primary);
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .skill-tag {
+            background-color: var(--primary-light);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+        }
+
+        .experience-item,
+        .project-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .experience-item:last-child,
+        .project-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .experience-header,
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .experience-company,
+        .project-name {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .experience-date,
+        .project-date {
+            color: var(--secondary);
+            font-size: 0.875rem;
+        }
+
+        .experience-position {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .experience-description,
+        .project-description {
+            color: var(--secondary);
+        }
+
+        .project-image {
+            margin: 1rem 0;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            max-height: 200px;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .project-image img:hover {
+            transform: scale(1.02);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            color: var(--primary);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .download-btn {
+            display: block;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            body {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-section {
+                position: static;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .form-section,
+            .preview-section {
+                padding: 1.5rem;
+            }
+
+            .portfolio-name {
+                font-size: 2rem;
+            }
+
+            .portfolio-title {
+                font-size: 1.1rem;
+            }
+
+            .portfolio-body {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Form Section -->
+        <div class="form-section">
+            <h2>Portfolio Details</h2>
+            
+            <!-- Personal Information -->
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="John Doe">
+            </div>
+            
+            <div class="form-group">
+                <label for="title">Professional Title</label>
+                <input type="text" id="title" placeholder="Software Developer">
+            </div>
+            
+            <div class="form-group">
+                <label for="bio">Bio/Summary</label>
+                <textarea id="bio" placeholder="Professional summary about yourself..."></textarea>
+            </div>
+            
+            <!-- Contact Information -->
+            <h2>Contact Information</h2>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="john.doe@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" placeholder="+1 (123) 456-7890">
+            </div>
+            
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" placeholder="City, Country">
+            </div>
+            
+            <div class="form-group">
+                <label>Social Links</label>
+                <div id="social-links-container" class="dynamic-list">
+                    <!-- Social links will be added here -->
+                </div>
+                <div class="form-group">
+                    <select id="social-platform" class="form-control">
+                        <option value="linkedin">LinkedIn</option>
+                        <option value="github">GitHub</option>
+                        <option value="twitter">Twitter</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="dribbble">Dribbble</option>
+                        <option value="behance">Behance</option>
+                    </select>
+                    <input type="url" id="social-url" placeholder="https://example.com/yourprofile">
+                </div>
+                <button class="btn btn-outline add-item-btn" id="add-social-link">Add Social Link</button>
+            </div>
+            
+            <!-- Skills -->
+            <h2>Skills</h2>
+            
+            <div class="form-group">
+                <div id="skills-container" class="dynamic-list">
+                    <!-- Skills will be added here -->
+                </div>
+                <div class="form-group">
+                    <input type="text" id="skill-input" placeholder="JavaScript, React, Node.js">
+                </div>
+                <button class="btn btn-outline add-item-btn" id="add-skill">Add Skill</button>
+            </div>
+            
+            <!-- Experience -->
+            <h2>Work Experience</h2>
+            
+            <div id="experience-container" class="dynamic-list">
+                <!-- Experience items will be added here -->
+            </div>
+            
+            <button class="btn btn-outline add-item-btn" id="add-experience">Add Experience</button>
+            
+            <!-- Projects -->
+            <h2>Projects</h2>
+            
+            <div id="projects-container" class="dynamic-list">
+                <!-- Project items will be added here -->
+            </div>
+            
+            <button class="btn btn-outline add-item-btn" id="add-project">Add Project</button>
+            
+        </div>
+        
+        <!-- Preview Section -->
+        <div class="preview-section">
+            <h2>Portfolio Preview</h2>
+            
+            <div class="portfolio-template" id="portfolio-template">
+                <div class="portfolio-header">
+                    <h1 class="portfolio-name" id="preview-name">Your Name</h1>
+                    <h2 class="portfolio-title" id="preview-title">Your Professional Title</h2>
+                    <p class="portfolio-bio" id="preview-bio">A brief professional summary about yourself, your skills, and what you bring to the table.</p>
+                    
+                    <div class="social-links" id="preview-social-links">
+                        <!-- Social links will be added here -->
+                    </div>
+                </div>
+                
+                <div class="portfolio-body">
+                    <!-- Contact Section -->
+                    <div class="portfolio-section">
+                        <h3 class="portfolio-section-title">Contact</h3>
+                        <div class="contact-list" id="preview-contact">
+                            <!-- Contact info will be added here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Skills Section -->
+                    <div class="portfolio-section">
+                        <h3 class="portfolio-section-title">Skills</h3>
+                        <div class="skills-list" id="preview-skills">
+                            <!-- Skills will be added here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Experience Section -->
+                    <div class="portfolio-section">
+                        <h3 class="portfolio-section-title">Experience</h3>
+                        <div id="preview-experience">
+                            <!-- Experience will be added here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Projects Section -->
+                    <div class="portfolio-section">
+                        <h3 class="portfolio-section-title">Projects</h3>
+                        <div id="preview-projects">
+                            <!-- Projects will be added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn download-btn" id="download-portfolio">Download Portfolio</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const formSection = document.querySelector('.form-section');
+            const portfolioTemplate = document.getElementById('portfolio-template');
+            
+            // Input Elements
+            const nameInput = document.getElementById('name');
+            const titleInput = document.getElementById('title');
+            const bioInput = document.getElementById('bio');
+            const emailInput = document.getElementById('email');
+            const phoneInput = document.getElementById('phone');
+            const locationInput = document.getElementById('location');
+            
+            // Dynamic Elements
+            const socialLinksContainer = document.getElementById('social-links-container');
+            const socialPlatformSelect = document.getElementById('social-platform');
+            const socialUrlInput = document.getElementById('social-url');
+            const addSocialLinkBtn = document.getElementById('add-social-link');
+            
+            const skillsContainer = document.getElementById('skills-container');
+            const skillInput = document.getElementById('skill-input');
+            const addSkillBtn = document.getElementById('add-skill');
+            
+            const experienceContainer = document.getElementById('experience-container');
+            const addExperienceBtn = document.getElementById('add-experience');
+            
+            const projectsContainer = document.getElementById('projects-container');
+            const addProjectBtn = document.getElementById('add-project');
+            
+            // Preview Elements
+            const previewName = document.getElementById('preview-name');
+            const previewTitle = document.getElementById('preview-title');
+            const previewBio = document.getElementById('preview-bio');
+            const previewSocialLinks = document.getElementById('preview-social-links');
+            const previewContact = document.getElementById('preview-contact');
+            const previewSkills = document.getElementById('preview-skills');
+            const previewExperience = document.getElementById('preview-experience');
+            const previewProjects = document.getElementById('preview-projects');
+            
+            // Download Button
+            const downloadBtn = document.getElementById('download-portfolio');
+            
+            // Initialize portfolio data
+            const portfolioData = {
+                name: '',
+                title: '',
+                bio: '',
+                contact: {
+                    email: '',
+                    phone: '',
+                    location: ''
+                },
+                socialLinks: [],
+                skills: [],
+                experience: [],
+                projects: []
+            };
+            
+            // Update preview function
+            function updatePreview() {
+                previewName.textContent = portfolioData.name || 'Your Name';
+                previewTitle.textContent = portfolioData.title || 'Your Professional Title';
+                previewBio.textContent = portfolioData.bio || 'A brief professional summary about yourself, your skills, and what you bring to the table.';
+                
+                // Update contact information
+                previewContact.innerHTML = '';
+                if (portfolioData.contact.email) {
+                    const emailItem = createContactItem('envelope', portfolioData.contact.email);
+                    previewContact.appendChild(emailItem);
+                }
+                if (portfolioData.contact.phone) {
+                    const phoneItem = createContactItem('phone', portfolioData.contact.phone);
+                    previewContact.appendChild(phoneItem);
+                }
+                if (portfolioData.contact.location) {
+                    const locationItem = createContactItem('map-marker-alt', portfolioData.contact.location);
+                    previewContact.appendChild(locationItem);
+                }
+                
+                // Update social links
+                previewSocialLinks.innerHTML = '';
+                portfolioData.socialLinks.forEach(social => {
+                    const socialLink = document.createElement('a');
+                    socialLink.className = 'social-link';
+                    socialLink.href = social.url;
+                    socialLink.target = '_blank';
+                    socialLink.rel = 'noopener noreferrer';
+                    
+                    const icon = document.createElement('i');
+                    switch(social.platform) {
+                        case 'linkedin':
+                            icon.className = 'fab fa-linkedin-in';
+                            break;
+                        case 'github':
+                            icon.className = 'fab fa-github';
+                            break;
+                        case 'twitter':
+                            icon.className = 'fab fa-twitter';
+                            break;
+                        case 'facebook':
+                            icon.className = 'fab fa-facebook-f';
+                            break;
+                        case 'instagram':
+                            icon.className = 'fab fa-instagram';
+                            break;
+                        case 'dribbble':
+                            icon.className = 'fab fa-dribbble';
+                            break;
+                        case 'behance':
+                            icon.className = 'fab fa-behance';
+                            break;
+                    }
+                    
+                    socialLink.appendChild(icon);
+                    previewSocialLinks.appendChild(socialLink);
+                });
+                
+                // Update skills
+                previewSkills.innerHTML = '';
+                portfolioData.skills.forEach(skill => {
+                    const skillTag = document.createElement('div');
+                    skillTag.className = 'skill-tag animate';
+                    skillTag.textContent = skill;
+                    previewSkills.appendChild(skillTag);
+                });
+                
+                // Update experience
+                previewExperience.innerHTML = '';
+                portfolioData.experience.forEach(exp => {
+                    const experienceItem = document.createElement('div');
+                    experienceItem.className = 'experience-item animate';
+                    
+                    const experienceHeader = document.createElement('div');
+                    experienceHeader.className = 'experience-header';
+                    
+                    const experienceCompany = document.createElement('span');
+                    experienceCompany.className = 'experience-company';
+                    experienceCompany.textContent = exp.company;
+                    
+                    const experienceDate = document.createElement('span');
+                    experienceDate.className = 'experience-date';
+                    experienceDate.textContent = `${exp.startDate} - ${exp.endDate}`;
+                    
+                    const experiencePosition = document.createElement('div');
+                    experiencePosition.className = 'experience-position';
+                    experiencePosition.textContent = exp.position;
+                    
+                    const experienceDescription = document.createElement('p');
+                    experienceDescription.className = 'experience-description';
+                    experienceDescription.textContent = exp.description;
+                    
+                    experienceHeader.appendChild(experienceCompany);
+                    experienceHeader.appendChild(experienceDate);
+                    
+                    experienceItem.appendChild(experienceHeader);
+                    experienceItem.appendChild(experiencePosition);
+                    experienceItem.appendChild(experienceDescription);
+                    
+                    previewExperience.appendChild(experienceItem);
+                });
+                
+                // Update projects
+                previewProjects.innerHTML = '';
+                portfolioData.projects.forEach(project => {
+                    const projectItem = document.createElement('div');
+                    projectItem.className = 'project-item animate';
+                    
+                    const projectHeader = document.createElement('div');
+                    projectHeader.className = 'project-header';
+                    
+                    const projectName = document.createElement('span');
+                    projectName.className = 'project-name';
+                    projectName.textContent = project.name;
+                    
+                    const projectDate = document.createElement('span');
+                    projectDate.className = 'project-date';
+                    projectDate.textContent = project.date;
+                    
+                    const projectImage = document.createElement('div');
+                    projectImage.className = 'project-image';
+                    
+                    const img = document.createElement('img');
+                    img.src = project.image || 'https://placehold.co/800x400';
+                    img.alt = project.name;
+                    
+                    const projectDescription = document.createElement('p');
+                    projectDescription.className = 'project-description';
+                    projectDescription.textContent = project.description;
+                    
+                    projectHeader.appendChild(projectName);
+                    projectHeader.appendChild(projectDate);
+                    
+                    projectImage.appendChild(img);
+                    
+                    projectItem.appendChild(projectHeader);
+                    projectItem.appendChild(projectImage);
+                    projectItem.appendChild(projectDescription);
+                    
+                    previewProjects.appendChild(projectItem);
+                });
+            }
+            
+            // Create contact item for preview
+            function createContactItem(iconName, text) {
+                const contactItem = document.createElement('div');
+                contactItem.className = 'contact-item';
+                
+                const icon = document.createElement('i');
+                icon.className = `fas fa-${iconName} contact-icon`;
+                
+                const textSpan = document.createElement('span');
+                textSpan.textContent = text;
+                
+                contactItem.appendChild(icon);
+                contactItem.appendChild(textSpan);
+                
+                return contactItem;
+            }
+            
+            // Add event listeners for basic information
+            nameInput.addEventListener('input', (e) => {
+                portfolioData.name = e.target.value;
+                updatePreview();
+            });
+            
+            titleInput.addEventListener('input', (e) => {
+                portfolioData.title = e.target.value;
+                updatePreview();
+            });
+            
+            bioInput.addEventListener('input', (e) => {
+                portfolioData.bio = e.target.value;
+                updatePreview();
+            });
+            
+            emailInput.addEventListener('input', (e) => {
+                portfolioData.contact.email = e.target.value;
+                updatePreview();
+            });
+            
+            phoneInput.addEventListener('input', (e) => {
+                portfolioData.contact.phone = e.target.value;
+                updatePreview();
+            });
+            
+            locationInput.addEventListener('input', (e) => {
+                portfolioData.contact.location = e.target.value;
+                updatePreview();
+            });
+            
+            // Social Links
+            addSocialLinkBtn.addEventListener('click', () => {
+                const platform = socialPlatformSelect.value;
+                const url = socialUrlInput.value;
+                
+                if (!url) {
+                    alert('Please enter a URL for the social link');
+                    return;
+                }
+                
+                // Add to form
+                const socialItem = document.createElement('div');
+                socialItem.className = 'dynamic-item';
+                
+                const socialContent = document.createElement('div');
+                socialContent.className = 'dynamic-item-content';
+                socialContent.textContent = `${platform.charAt(0).toUpperCase() + platform.slice(1)}: ${url}`;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'dynamic-item-delete';
+                deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+                
+                deleteBtn.addEventListener('click', () => {
+                    socialItem.remove();
+                    portfolioData.socialLinks = portfolioData.socialLinks.filter(item => 
+                        !(item.platform === platform && item.url === url)
+                    );
+                    updatePreview();
+                });
+                
+                socialItem.appendChild(socialContent);
+                socialItem.appendChild(deleteBtn);
+                socialLinksContainer.appendChild(socialItem);
+                
+                // Add to data
+                portfolioData.socialLinks.push({
+                    platform,
+                    url
+                });
+                
+                // Clear inputs
+                socialUrlInput.value = '';
+                
+                updatePreview();
+            });
+            
+            // Skills
+            addSkillBtn.addEventListener('click', () => {
+                const skill = skillInput.value.trim();
+                
+                if (!skill) {
+                    alert('Please enter a skill');
+                    return;
+                }
+                
+                // Split skills by comma if multiple are entered
+                const skillsToAdd = skill.split(',').map(s => s.trim()).filter(s => s);
+                
+                skillsToAdd.forEach(skill => {
+                    // Add to form
+                    const skillItem = document.createElement('div');
+                    skillItem.className = 'dynamic-item';
+                    
+                    const skillContent = document.createElement('div');
+                    skillContent.className = 'dynamic-item-content';
+                    skillContent.textContent = skill;
+                    
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'dynamic-item-delete';
+                    deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+                    
+                    deleteBtn.addEventListener('click', () => {
+                        skillItem.remove();
+                        portfolioData.skills = portfolioData.skills.filter(s => s !== skill);
+                        updatePreview();
+                    });
+                    
+                    skillItem.appendChild(skillContent);
+                    skillItem.appendChild(deleteBtn);
+                    skillsContainer.appendChild(skillItem);
+                    
+                    // Add to data
+                    portfolioData.skills.push(skill);
+                });
+                
+                // Clear input
+                skillInput.value = '';
+                
+                updatePreview();
+            });
+            
+            // Experience
+            function createExperienceForm() {
+                const experienceItem = document.createElement('div');
+                experienceItem.className = 'dynamic-item';
+                
+                const experienceForm = document.createElement('div');
+                experienceForm.className = 'dynamic-item-content';
+                experienceForm.innerHTML = `
+                    <div class="form-group">
+                        <label for="exp-company">Company</label>
+                        <input type="text" class="exp-company" placeholder="Company Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="exp-position">Position</label>
+                        <input type="text" class="exp-position" placeholder="Job Title">
+                    </div>
+                    <div class="form-group row">
+                        <div class="form-group col-6">
+                            <label for="exp-start-date">Start Date</label>
+                            <input type="text" class="exp-start-date" placeholder="MM/YYYY">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="exp-end-date">End Date</label>
+                            <input type="text" class="exp-end-date" placeholder="MM/YYYY or Present">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exp-description">Description</label>
+                        <textarea class="exp-description" placeholder="Describe your role and achievements"></textarea>
+                    </div>
+                `;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'dynamic-item-delete';
+                deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+                
+                // Add save button
+                const saveBtn = document.createElement('button');
+                saveBtn.className = 'btn btn-outline';
+                saveBtn.textContent = 'Save';
+                saveBtn.style.marginTop = '1rem';
+                
+                saveBtn.addEventListener('click', () => {
+                    const company = experienceItem.querySelector('.exp-company').value;
+                    const position = experienceItem.querySelector('.exp-position').value;
+                    const startDate = experienceItem.querySelector('.exp-start-date').value;
+                    const endDate = experienceItem.querySelector('.exp-end-date').value;
+                    const description = experienceItem.querySelector('.exp-description').value;
+                    
+                    if (!company || !position || !startDate) {
+                        alert('Please fill in all required fields (Company, Position, Start Date)');
+                        return;
+                    }
+                    
+                    const experience = {
+                        company,
+                        position,
+                        startDate,
+                        endDate: endDate || 'Present',
+                        description
+                    };
+                    
+                    portfolioData.experience.push(experience);
+                    updatePreview();
+                    
+                    // Update display
+                    experienceContent.textContent = `${position} at ${company} (${startDate} - ${endDate || 'Present'})`;
+                    experienceItem.removeChild(experienceForm);
+                    experienceItem.removeChild(saveBtn);
+                    
+                    experienceItem.insertBefore(experienceContent, deleteBtn);
+                });
+                
+                const experienceContent = document.createElement('div');
+                
+                deleteBtn.addEventListener('click', () => {
+                    experienceItem.remove();
+                    portfolioData.experience = portfolioData.experience.filter(item => 
+                        !(item.company === experienceItem.querySelector('.exp-company')?.value && 
+                          item.position === experienceItem.querySelector('.exp-position')?.value)
+                    );
+                    updatePreview();
+                });
+                
+                experienceItem.appendChild(experienceForm);
+                experienceItem.appendChild(saveBtn);
+                experienceItem.appendChild(deleteBtn);
+                
+                return experienceItem;
+            }
+            
+            addExperienceBtn.addEventListener('click', () => {
+                const newExperience = createExperienceForm();
+                experienceContainer.appendChild(newExperience);
+            });
+            
+            // Projects
+            function createProjectForm() {
+                const projectItem = document.createElement('div');
+                projectItem.className = 'dynamic-item';
+                
+                const projectForm = document.createElement('div');
+                projectForm.className = 'dynamic-item-content';
+                projectForm.innerHTML = `
+                    <div class="form-group">
+                        <label for="project-name">Project Name</label>
+                        <input type="text" class="project-name" placeholder="Project Title">
+                    </div>
+                    <div class="form-group">
+                        <label for="project-date">Date</label>
+                        <input type="text" class="project-date" placeholder="MM/YYYY">
+                    </div>
+                    <div class="form-group">
+                        <label for="project-image-url">Image URL (optional)</label>
+                        <input type="url" class="project-image-url" placeholder="https://example.com/image.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label for="project-description">Description</label>
+                        <textarea class="project-description" placeholder="Describe the project and your role"></textarea>
+                    </div>
+                `;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'dynamic-item-delete';
+                deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+                
+                // Add save button
+                const saveBtn = document.createElement('button');
+                saveBtn.className = 'btn btn-outline';
+                saveBtn.textContent = 'Save';
+                saveBtn.style.marginTop = '1rem';
+                
+                saveBtn.addEventListener('click', () => {
+                    const name = projectItem.querySelector('.project-name').value;
+                    const date = projectItem.querySelector('.project-date').value;
+                    const imageUrl = projectItem.querySelector('.project-image-url').value;
+                    const description = projectItem.querySelector('.project-description').value;
+                    
+                    if (!name || !date) {
+                        alert('Please fill in all required fields (Project Name, Date)');
+                        return;
+                    }
+                    
+                    const project = {
+                        name,
+                        date,
+                        image: imageUrl || 'https://placehold.co/800x400',
+                        description: description || 'Project description'
+                    };
+                    
+                    portfolioData.projects.push(project);
+                    updatePreview();
+                    
+                    // Update display
+                    projectContent.textContent = `${name} (${date})`;
+                    projectItem.removeChild(projectForm);
+                    projectItem.removeChild(saveBtn);
+                    
+                    projectItem.insertBefore(projectContent, deleteBtn);
+                });
+                
+                const projectContent = document.createElement('div');
+                
+                deleteBtn.addEventListener('click', () => {
+                    projectItem.remove();
+                    portfolioData.projects = portfolioData.projects.filter(item => 
+                        !(item.name === projectItem.querySelector('.project-name')?.value)
+                    );
+                    updatePreview();
+                });
+                
+                projectItem.appendChild(projectForm);
+                projectItem.appendChild(saveBtn);
+                projectItem.appendChild(deleteBtn);
+                
+                return projectItem;
+            }
+            
+            addProjectBtn.addEventListener('click', () => {
+                const newProject = createProjectForm();
+                projectsContainer.appendChild(newProject);
+            });
+            
+            // Download Portfolio
+            downloadBtn.addEventListener('click', () => {
+                if (!portfolioData.name) {
+                    alert('Please enter your name before downloading');
+                    return;
+                }
+                
+                // Create the final HTML string
+                let finalHTML = `
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>${portfolioData.name} - Portfolio</title>
+                        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                        <style>
+                            ${[...document.querySelectorAll('style')].map(el => el.innerHTML).join('\n')}
+                        </style>
+                    </head>
+                    <body>
+                        ${portfolioTemplate.outerHTML}
+                    </body>
+                    </html>
+                `;
+                
+                // Create download link
+                const blob = new Blob([finalHTML], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${portfolioData.name.replace(/\s+/g, '-').toLowerCase()}-portfolio.html`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+            
+            // Initialize with some example data
+            portfolioData.name = 'Jane Smith';
+            portfolioData.title = 'Frontend Developer';
+            portfolioData.bio = 'Passionate frontend developer with 5+ years of experience building responsive and accessible web applications.';
+            portfolioData.contact.email = 'jane.smith@example.com';
+            portfolioData.contact.phone = '+1 (555) 123-4567';
+            portfolioData.contact.location = 'San Francisco, CA';
+            portfolioData.socialLinks = [
+                { platform: 'linkedin', url: 'https://linkedin.com/in/janesmith' },
+                { platform: 'github', url: 'https://github.com/janesmith' }
+            ];
+            portfolioData.skills = ['JavaScript', 'React', 'HTML5', 'CSS3', 'Node.js'];
+            portfolioData.experience = [
+                {
+                    company: 'Tech Solutions Inc.',
+                    position: 'Senior Frontend Developer',
+                    startDate: '01/2020',
+                    endDate: 'Present',
+                    description: 'Lead a team of developers to build responsive web applications. Implemented modern frontend architectures and mentor junior developers.'
+                },
+                {
+                    company: 'Web Creatives LLC',
+                    position: 'Frontend Developer',
+                    startDate: '06/2018',
+                    endDate: '12/2019',
+                    description: 'Developed user interfaces for client websites. Collaborated with designers to implement pixel-perfect UIs.'
+                }
+            ];
+            portfolioData.projects = [
+                {
+                    name: 'E-commerce Platform',
+                    date: '2022',
+                    image: 'https://placehold.co/1600x900',
+                    description: 'Developed a fully responsive e-commerce platform with React, Redux, and Firebase backend.'
+                },
+                {
+                    name: 'Task Management App',
+                    date: '2021',
+                    image: 'https://placehold.co/1600x900',
+                    description: 'Created a drag-and-drop task management application with React and Node.js backend.'
+                }
+            ];
+            
+            // Fill form with example data
+            nameInput.value = portfolioData.name;
+            titleInput.value = portfolioData.title;
+            bioInput.value = portfolioData.bio;
+            emailInput.value = portfolioData.contact.email;
+            phoneInput.value = portfolioData.contact.phone;
+            locationInput.value = portfolioData.contact.location;
+            
+            // Add example skills to form
+            portfolioData.skills.forEach(skill => {
+                const skillItem = document.createElement('div');
+                skillItem.className = 'dynamic-item';
+                
+                const skillContent = document.createElement('div');
+                skillContent.className = 'dynamic-item-content';
+                skillContent.textContent = skill;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'dynamic-item-delete';
+                deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+                
+                deleteBtn.addEventListener('click', () => {
+                    skillItem.remove();
+                    portfolioData.skills = portfolioData.skills.filter(s => s !== skill);
+                    updatePreview();
+                });
+                
+                skillItem.appendChild(skillContent);
+                skillItem.appendChild(deleteBtn);
+                skillsContainer.appendChild(skillItem);
+            });
+            
+            // Add example social links to form
+            portfolioData.socialLinks.forEach(social => {
+                const socialItem = document.createElement('div');
+                socialItem.className = 'dynamic-item';
+                
+                const socialContent = document.createElement('div');
+                socialContent.className = 'dynamic-item-content';
+                socialContent.textContent = `${social.platform.charAt(0).toUpperCase() + social.platform.slice(1)}: ${social.url}`;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'dynamic-item-delete';
+                deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+                
+                deleteBtn.addEventListener('click', () => {
+                    socialItem.remove();
+                    portfolioData.socialLinks = portfolioData.socialLinks.filter(item => 
+                        !(item.platform === social.platform && item.url === social.url)
+                    );
+                    updatePreview();
+                });
+                
+                socialItem.appendChild(socialContent);
+                socialItem.appendChild(deleteBtn);
+                socialLinksContainer.appendChild(socialItem);
+            });
+            
+            // Add example experience to form
+            portfolioData.experience.forEach(exp => {
+                const experienceItem = document.createElement('div');
+                experienceItem.className = 'dynamic-item';
+                
+                const experienceContent = document.createElement('div');
+                experienceContent.className = 'dynamic-item-content';
+                experienceContent.textContent = `${exp.position} at ${exp.company} (${exp.startDate} - ${exp.endDate})`;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'dynamic-item-delete';
+                deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+                
+                deleteBtn.addEventListener('click', () => {
+                    experienceItem.remove();
+                    portfolioData.experience = portfolioData.experience.filter(item => 
+                        !(item.company === exp.company && item.position === exp.position)
+                    );
+                    updatePreview();
+                });
+                
+                experienceItem.appendChild(experienceContent);
+                experienceItem.appendChild(deleteBtn);
+                experienceContainer.appendChild(experienceItem);
+            });
+            
+            // Add example projects to form
+            portfolioData.projects.forEach(project => {
+                const projectItem = document.createElement('div');
+                projectItem.className = 'dynamic-item';
+                
+                const projectContent = document.createElement('div');
+                projectContent.className = 'dynamic-item-content';
+                projectContent.textContent = `${project.name} (${project.date})`;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'dynamic-item-delete';
+                deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+                
+                deleteBtn.addEventListener('click', () => {
+                    projectItem.remove();
+                    portfolioData.projects = portfolioData.projects.filter(item => 
+                        !(item.name === project.name)
+                    );
+                    updatePreview();
+                });
+                
+                projectItem.appendChild(projectContent);
+                projectItem.appendChild(deleteBtn);
+                projectsContainer.appendChild(projectItem);
+            });
+            
+            // Initial preview update
+            updatePreview();
+        });
+    </script>
+</body>
+</html>
